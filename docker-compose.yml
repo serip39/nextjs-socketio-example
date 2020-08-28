@@ -1,0 +1,18 @@
+version: '3'
+services:
+  nextjs:
+    build: ./docker/nextjs/
+    container_name: mmwave-nextjs
+    tty: true
+    stdin_open: true
+    cap_add:
+      - SYS_ADMIN
+    shm_size: 256
+    # コンテナ起動時のコマンド
+    command: yarn dev
+    # ホストOSとコンテナ内でソースコードを共有
+    volumes:
+      - ./app:/app
+    # コンテナ内部の3000（右）を外部から5000（左）でアクセスする
+    ports:
+      - 5000:3000
