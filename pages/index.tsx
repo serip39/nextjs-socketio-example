@@ -8,7 +8,6 @@ import { Send } from '@material-ui/icons'
 type ContainerProps = {}
 
 type ChatType = {
-  id?: number
   userName: string
   message: string
   datetime: string
@@ -17,7 +16,11 @@ type ChatType = {
 const Home = (props: ContainerProps) => {
   const [socket, _] = useState(() => io())
   const [isConnected, setIsConnected] = useState(false)
-  const [newChat, setNewChat] = useState<ChatType>({})
+  const [newChat, setNewChat] = useState<ChatType>({
+    userName: '',
+    message: '',
+    datetime: '',
+  })
   const [chats, setChats] = useState<ChatType[]>([
     {
       userName: 'TEST BOT',
@@ -33,11 +36,11 @@ const Home = (props: ContainerProps) => {
       console.log('socket connected!!')
       setIsConnected(true)
     })
-    socket.on('disconnect', (reason) => {
+    socket.on('disconnect', () => {
       console.log('socket disconnected!!')
       setIsConnected(false)
     })
-    socket.on('update-data', newData => {
+    socket.on('update-data', (newData: ChatType) => {
       console.log('Get Updated Data', newData)
       setNewChat(newData)
     })
@@ -48,19 +51,12 @@ const Home = (props: ContainerProps) => {
   }, [])
 
   useEffect(() => {
-    if (Object.keys(newChat).length) {
+    if (newChat.message) {
       setChats([ ...chats, newChat])
     }
   }, [newChat])
 
-  const handleChat = (newData: ChatType) => {
-    newData.id = chats.length
-    console.log('Get Updated Data', chats, newData)
-    setChats([...chats, newData])
-  }
-
   const handleSubmit = async () => {
-    console.log(userName, message)
     const datetime = dayjs().format('YYYY-MM-DD HH:mm:ss')
     await fetch(location.href + 'chat', {
       method: 'POST',
