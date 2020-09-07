@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import io from 'socket.io-client'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import { Container, Button, InputBase, Box, Avatar, Paper, Typography } from '@material-ui/core'
 import { Send } from '@material-ui/icons'
 
@@ -49,7 +49,6 @@ const Home = (props: ContainerProps) => {
 
   useEffect(() => {
     if (Object.keys(newChat).length) {
-      console.log('newChat', newChat)
       setChats([ ...chats, newChat])
     }
   }, [newChat])
@@ -95,7 +94,7 @@ const Home = (props: ContainerProps) => {
 type Props = ContainerProps & {
   className?: string
   isConnected: boolean
-  chats: ChatType
+  chats: ChatType[]
   userName: string
   message: string
   setUserName: (value: string) => void
