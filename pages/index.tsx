@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import io from 'socket.io-client'
 import dayjs from 'dayjs'
